@@ -1,0 +1,27 @@
+name: Staged Deployment Demo
+on:
+  push:
+    branches: [ main ]
+    paths: [ hands-on-staged-deployments/** ]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        type: environment
+        required: true
+
+jobs:
+  test-action:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3.3.0
+
+      - name: Run my own container action
+        id: hello-action
+        uses: ./hello-world-docker-action
+        with:
+          who-to-greet: '@wulfland'
+
+      - name: Output time set in the container
+        run: echo "The time was ${{ steps.hello-action.outputs.time }} when the action said hello"
