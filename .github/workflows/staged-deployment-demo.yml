@@ -10,7 +10,7 @@ on:
         type: environment
         required: true
 jobs:
-  test-action:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -18,6 +18,7 @@ jobs:
   Test:
     runs-on: ubuntu-latest
     if: github.event_name == 'workflow_dispatch'
+    needs: build
     environment: Test
     steps:
       - run: echo "🧪 Testing..."
@@ -25,6 +26,7 @@ jobs:
   Load-Test:
     runs-on: ubuntu-latest
     if: github.event_name == 'workflow_dispatch'
+    needs: build
     environment: Load-Test
     steps:
       - run: |
